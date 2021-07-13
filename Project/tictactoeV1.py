@@ -32,14 +32,24 @@ def DisplayBoard(board):
 def EnterMove():
 
     global gameBoard
+
+    #print(gameBoard)
     ok = False
     while not ok:
+
         move = int(input("Lütfen Kare Seçin [1-9]: "))
         ok = move in list(range(1,10))  # kullanıcı girişi doğru aralıkta mı?
         if not ok:
             print("[1-9] Arası Kare Seçmediniz. Lütfen Tekrar Giriniz!")
             continue
-        move = dict( (j,(x, y)) for x, i in enumerate(gameBoard) for y, j in enumerate(i) )[move] 	# bu üç satır çok önemli. seçili digit değerine sahip kareyi
+        while True:
+            try:
+                move = dict( (j,(x, y)) for x, i in enumerate(gameBoard) for y, j in enumerate(i) )[move] 	# bu üç satır çok önemli. seçili digit değerine sahip kareyi
+                break
+            except:
+                move = int(input("Dolu Bir Kare Seçtiniz: Lütfen Kare Seçin [1-9]: "))
+                continue
+
         row = move[0] 	# [row][col] değerine dönüştürmeliyiz. Örn
         col = move[1]		# 1 → [0][0], 2 → [0][1], 3 → [0][2], 4 → [1][0], 6 → [1][2] gibi
         sign = gameBoard[row][col]  # seçili kareyi oku
@@ -53,7 +63,7 @@ def EnterMove():
 
 
 def VictoryFor(board, mark):
-    players = {'O':'player', 'X':'Computer'}
+    players = {'O':'Oyuncu', 'X':'Bilgisayar'}
 
     if (board[0][0] == board[1][1] == board[2][2] == mark
     or board[0][2] == board[1][1] == board[2][0] == mark):
@@ -137,15 +147,15 @@ if __name__ == "__main__":
 
                 if victory is None and len(freePlaces) == 0:
                     try:
-                        print(f'Game Over! The Game is Tied!')
-                        gamePlay = input('Do You Wanna Play Again ?                   Y-y/N-n:').lower() == 'y'
+                        print(f'Oyun Berabere Tamamlandı!')
+                        gamePlay = input('Tekrar oynamak ister misin ?                   Y-y/N-n:').lower() == 'y'
                         break
                     except:
                         print('Something wrong in Tied option')
                 elif victory != None:
 
-                        print(f'Game Over! The Winner is {victory}')
-                        gamePlay = input('Do You Wanna Play Again ?                   Y-y/N-n:').lower() == 'y'
+                        print(f'Oyun Bitti! Kazanan : {victory}')
+                        gamePlay = input('Tekrar oynamak ister misin ?                   Y-y/N-n:').lower() == 'y'
                         break
 
 
